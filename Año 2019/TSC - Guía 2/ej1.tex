@@ -1,0 +1,163 @@
+\documentclass[12pt]{report}
+    \usepackage[margin=0.5in]{geometry}
+    \usepackage{amsmath}
+    \usepackage{bm}
+    \renewcommand{\familydefault}{\sfdefault}
+    \renewcommand{\baselinestretch}{1.5} 
+    \title{Técnicas de Simulación en Computadoras en \LaTeX}
+    \author{Nelson Castro}
+    \begin{document}
+    \maketitle
+    \newpage
+    \subsection*{\bfseries \large Ejercicio 1}
+
+    En la ecuación de transferencia de calor utilizada en la clase
+
+    \begin{center}
+        $\displaystyle \nabla \left( k \nabla T \right) = -Q$
+    \end{center}
+    Modifique toda la formulación de la aplicación del MEF, considerando que Q ya no es constante, sino que corresponde a la siguiente función:
+    
+    \begin{center}
+        $\displaystyle Q = Q(x) = 2x^2 -3x^2$
+    \end{center}
+    Comente en qué cambia con respecto al caso de 1 dimensión.
+    \\ \textbf{Solución}
+
+    \centering \textbf{Interpolación}
+
+    \begin{center}
+        $\displaystyle N_1=1-\varepsilon - \eta$
+
+        $\displaystyle N_2= \varepsilon$
+
+        $\displaystyle N_3= \eta$
+
+        $\displaystyle T = N_1 T_1 + N_2 T_2 + N_3 T_3 = \bm{NT}$
+
+        $\displaystyle x_0= \approx (1-\varepsilon - \eta)x_1 + \varepsilon x_2 + \eta x_3 \equiv (x_2 + x_1)\epsilon + (x_3 - x_1)\eta + x_1$
+
+        $\displaystyle y_0= \approx (1-\varepsilon - \eta)y_1 + \varepsilon y_2 + \eta y_3 \equiv (y_2 + y_1)\epsilon + (y_3 - y_1)\eta + y_1$
+
+        $\displaystyle \bm X = [x_0 \hspace{0.2cm} y_0]$
+
+        $\displaystyle \bm \varepsilon = [\varepsilon \hspace{0.2cm} \eta]$
+
+        $\displaystyle \nabla_x = \left[ \begin{array}{c} \frac{d}{dx} \\ \frac{d}{dy} \end{array} \right]$
+
+        $\displaystyle \nabla_\varepsilon = \left[ \begin{array}{c} \frac{d}{d\varepsilon} \\ \frac{d}{d\eta} \end{array} \right]$
+    \end{center}
+
+    \textbf{Discretización}
+
+    \begin{center}
+        $\displaystyle \frac{d}{dx} \left( k \frac{dT}{dx} \right) = -Q_x$
+
+        $\displaystyle \frac{d}{dy} \left( k \frac{dT}{dy} \right) = -Q_y$
+
+        $\displaystyle \nabla_x (k \nabla_x (\bm{NT})) + 2x^2 -3x^2 \approx 0$
+    \end{center}
+
+    \textbf{Calculo residual}
+
+    \begin{center}
+        $\displaystyle \nabla_x (k \nabla_x (\bm{NT})) + 2x^2 -3x^2 = \Re$
+    \end{center}
+
+    \newpage
+    \textbf{Método de los residuos ponderados}
+
+    \begin{center}
+        $\displaystyle \int_\Omega \xi_i w_i d_\Omega = 0$
+    \end{center}
+
+    \textbf{Método de Galerkin}
+
+    \begin{center}
+        $\displaystyle W_i = N_i$
+
+        $\displaystyle \int_\Omega \bm N^T \left[\nabla_x (k \nabla_x (\bm{NT}))+2x^2 -3x^2\right]d\Omega = 0$
+    \end{center}
+
+    \begin{center}
+        \textbf{Forma fuerte}
+        \[
+        \displaystyle 
+        \underbrace{k\int_\Omega \bm N^T \left[\nabla_x (\nabla_x (\bm{NT}))\right]d\Omega \bm T}_{\text{Primera parte}} 
+        \ = 
+        \underbrace{- \int_\Omega (2x^2 -3x^2d) \bm N^T d\Omega}_{\text{Segunda parte}}
+        \]
+    \end{center}
+
+    \begin{center}
+        \textbf{Integración por partes}
+        \[
+        \displaystyle
+        \underbrace{k\int_\Omega \bm N^T \left[\nabla_x (\nabla_x (\bm{NT}))\right]d\Omega \bm T}_{\text{Primera parte}}
+        \ \Rightarrow
+        \underbrace{\bm N^T \bm k \nabla_x \bm{NT}|_\Gamma}_{\text{Termino natural}}  
+        \ - k \int_\Omega \nabla_x \bm N^T \nabla_x \bm N d\Omega \bm T
+        \]
+
+        $\displaystyle \nabla_x \bm N = \frac{dN}{dx} = \left( \frac{dx}{d\varepsilon}\right)^{-1} \frac{dN}{d\varepsilon} = \left[ \nabla_\varepsilon \bm X \right]^{-1} \nabla_\varepsilon \bm N$
+
+        $\displaystyle \left( \frac{dx}{d\varepsilon} \right)^{-1} = \left[ \nabla_\varepsilon \bm X \right]^{-1} = \left( \left[ \begin{array}{c} \frac{d}{d\varepsilon} \\ \frac{d}{d\eta} \end{array} \right] \left[ \begin{array}{cc} x_0 & y_0 \end{array} \right] \right)^{-1} = \left[ \begin{array}{cc} x_2-x_1 & y_2-y_1 \\ x_3 - x_1 & y_3 - y_1 \end{array} \right]^{-1}$
+        
+        $\displaystyle \frac{dN}{d\varepsilon} = \nabla_\varepsilon \bm N = \left[ \begin{array}{ccc} -1 & 1 & 0 \\ -1 & 0 & 1 \end{array} \right]$
+
+        $\displaystyle \nabla_x \bm N = \frac{1}{\left|\begin{array}{cc} x_2-x_1 & y_2-y_1 \\ x_3-x_1 & y_3-y_1 \end{array}\right|} \left[ \begin{array}{cc} y_3-y_1 & y_1 - y_2 \\ x_1 - x_3 & x_2 - x_1\end{array}\right]$
+    \end{center}
+        
+    Si por la propiedad $\displaystyle (\bm{AB})^T = \bm B^T \bm A^T$ entonces
+
+    \begin{center}
+        $\displaystyle \nabla_x \bm N^T = \frac{1}{\left| \begin{array}{cc} x_2-x_1 & y_2-y_1 \\ x_3-x_1 & y_3 - y_1 \end{array}\right|} \left[ \begin{array}{cc} -1 & -1 \\ 1 & 0 \\ 0 & 1 \end{array} \right]  \left[ \begin{array}{cc} y_3-y_1 & x_1 - x_3\\ y_1 - y_2 & x_2 - x_1 \end{array} \right]$
+    \end{center}
+
+    \begin{center}
+        $\displaystyle\ k \int_\Omega \nabla_x \bm N^T \nabla_x \bm N d\Omega T = $
+        \[
+        \displaystyle 
+        \linebreak \underbrace{\frac{k}{\left( \left| \begin{array}{cc} x_2-x_1 & y_2-y_1 \\ x_3-x_1 & y_3 - y_1 \end{array}\right| \right)^2}}_{\text{Det}} 
+        \underbrace{\left[ \begin{array}{cc} -1 & -1 \\ 1 & 0 \\ 0 & 1 \end{array} \right] }_{\bm B^T}  
+        \underbrace{\left[ \begin{array}{cc} y_3-y_1 & x_1 - x_3\\ y_1 - y_2 & x_2 - x_1 \end{array} \right]}_{\bm A^T} 
+        \underbrace{\left[ \begin{array}{cc} y_3-y_1 & y_1 - y_2 \\ x_1 - x_3 & x_2 - x_1\end{array}\right]}_{\bm A} 
+        \underbrace{\left[ \begin{array}{ccc} -1 & 1 & 0 \\ -1 & 0 & 1 \end{array} \right]}_{\bm B} \int_\Omega d\Omega \bm T
+        \]
+    \end{center}
+
+    \newpage
+    \begin{center}
+        $\displaystyle k \int_\Omega \nabla_x \bm N^T \nabla_x \bm N d\Omega T  = \frac{k}{\text{Det}^2}\bm B^T \bm A^T \bm{AB} \int_\Omega d\Omega \bm T$
+    \end{center}
+
+    \begin{center}
+        \textbf{Integración}
+        \[
+        \displaystyle  
+        \underbrace{-\int_\Omega \left( 2x^2 -3x^2 \right) \bm N^T d\Omega}_{\text{Segunda Parte}} 
+        \ = - \iint \left( 2x^2 -3x^2 \right) \left[ \begin{array}{c} 1-\varepsilon - \eta \\ \varepsilon \\ \eta \end{array} \right] dx dy
+        \]
+    \end{center}
+
+    \textbf{Transformación geométrica}
+    \begin{center}
+        $\displaystyle dxdy = |\bm J| d\varepsilon d\eta$
+        \[
+        \displaystyle
+        \ \bm J = \left( \nabla_\varepsilon \bm X \right)^T = \bm X^T \nabla_\varepsilon^T =
+        \underbrace{ \left[ \begin{array}{cc} x_2 - x_1 & x_3 - x_1 \\ y_2 - y_1 & y_3 - y_1 \end{array} \right]}_{\text{Jacobiano}} 
+        \]
+
+        \[
+        \displaystyle 
+        \underbrace{-\int_\Omega \left( 2x^2 -3x^2 \right) \bm N^T d\Omega}_{\text{Segunda Parte}} 
+        \ = - \left| \begin{array}{cc} x_2 - x_1 & x_3 - x_1 \\ y_2 - y_1 & y_3 - y_1 \end{array} \right| \iint \left( 2x_0^2 -3x_0^2 \right) \left[ \begin{array}{c} 1-\varepsilon - \eta \\ \varepsilon \\ \eta \end{array} \right] d\varepsilon d\eta
+        \]
+
+        $\displaystyle = - \bm J \int_0^1 \int_0^1 \left( 2x_0^2 -3x_0^2 \right) \left[ \begin{array}{c} 1-\varepsilon - \eta \\ \varepsilon \\ \eta \end{array} \right] d\varepsilon d\eta$
+
+        $\displaystyle = - \bm J \int_0^1 \int_0^1 \left( 2\left[ (x_2-x_1)\varepsilon + (x_3-x_1)\eta + x_1 \right]^2 -3\left[ (x_2-x_1)\varepsilon + (x_3-x_1)\eta + x_1 \right]^2 \right) \left[ \begin{array}{c} 1-\varepsilon - \eta \\ \varepsilon \\ \eta \end{array} \right] d\varepsilon d\eta$
+
+    \end{center}
+\end{document}

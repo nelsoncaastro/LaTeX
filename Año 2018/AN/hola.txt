@@ -1,0 +1,13 @@
+Hola, les dejo una alternativa al software original de la TI. 
+
+Un emulador de TI llamado Firebird, https://github.com/nspire-emus/firebird , solo bajan el apropiado para su SO. 
+
+Al iniciarlo, necesitan configurar 2 cosas fundamentales, el flash y el boot que aquí les ajunto.
+
+Para mayor funcionalidad deberán crear una snapshot en la opción de "Save to File" de ese submenú y luego deberan seleccionar este mismo archivo en  la ventana de configuración (e.g: Yo nombré al mío "official").
+
+Lo más importante es que antes de cerrar el emulador siempre en el submenú de Snapshot seleccionen "Suspend" para guardar lo que hayan hecho, cuando vuelvan a abrir el emulador, automáticamente resumirá el snapshot que han configurado.
+
+También permite el uso de ndless, http://ndless.me/
+
+Espero les sirva. 

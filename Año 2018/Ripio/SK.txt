@@ -1,0 +1,227 @@
+## The problem ##
+
+##Context##
+
+So recently I been using Kotlin for android development, and I discovered this CodeLab example [Android Room with a View][1], in my attempt to replicate it using Kotlin I ran into a lot of issues.
+
+I have exactly the same project structure of this [Github][2] provided in the CodeLab, here are my files:
+
+The Gradle project file:
+
+    // Top-level build file where you can add configuration options common to all sub-projects/modules.
+    
+    buildscript {
+        ext.kotlin_version = '1.2.41'
+        repositories {
+            google()
+            jcenter()
+        }
+        dependencies {
+            classpath 'com.android.tools.build:gradle:3.1.2'
+            classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    
+            // NOTE: Do not place your application dependencies here; they belong
+            // in the individual module build.gradle files
+        }
+    }
+    
+    allprojects {
+        repositories {
+            google()
+            jcenter()
+        }
+    }
+    
+    task clean(type: Delete) {
+        delete rootProject.buildDir
+    }
+    
+    ext {
+        buildToolsVersion = "25.0.2"
+        supportLibVersion = "25.3.1"
+        espressoVersion = "2.2.2"
+        archRoomVersion = "1.0.0-alpha1"
+    }
+
+The Gradle app file: 
+
+    apply plugin: 'com.android.application'
+    
+    apply plugin: 'kotlin-android'
+    
+    apply plugin: 'kotlin-android-extensions'
+    
+    apply plugin: "kotlin-kapt"
+    
+    android {
+        compileSdkVersion 27
+        defaultConfig {
+            applicationId "me.nelsoncastro.androidroomwithaviewinkotlin"
+            minSdkVersion 16
+            targetSdkVersion 27
+            versionCode 1
+            versionName "1.0"
+            testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        }
+        buildTypes {
+            release {
+                minifyEnabled false
+                proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            }
+        }
+    }
+    
+    dependencies {
+        def lifecycle_version = "1.1.1"
+    
+        implementation fileTree(dir: 'libs', include: ['*.jar'])
+        implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+        implementation 'com.android.support:appcompat-v7:27.1.1'
+        implementation 'com.android.support:design:27.1.1'
+    
+        implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+        testImplementation 'junit:junit:4.12'
+        androidTestImplementation 'com.android.support.test:runner:1.0.2'
+        androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    
+        implementation 'android.arch.lifecycle:extensions:1.1.1'
+        //annotationProcessor "android.arch.lifecycle:compiler:$lifecycle_version"
+        kapt "android.arch.lifecycle:compiler:$lifecycle_version"
+    
+    
+        implementation "android.arch.persistence.room:runtime:1.1.1-rc1"
+        //annotationProcessor "android.arch.persistence.room:compiler:1.1.1-rc1"
+        kapt "android.arch.persistence.room:compiler:1.1.1-rc1"
+        //androidTestImplementation "android.arch.persistence.room:testing:$room_version"
+    
+        //implementation "android.arch.lifecycle:viewmodel:$lifecycle_version-ktx" // use -ktx for Kotlin
+        // alternatively - just LiveData
+        //implementation "android.arch.lifecycle:livedata:$lifecycle_version"
+    
+    }
+
+*Word.kt*
+
+    @Entity(tableName = "word_table")
+    data class Word (@PrimaryKey @ColumnInfo(name = "word") var word: String= ""){
+    }
+
+*WordDao.kt*
+
+    @Dao
+    interface WordDao {
+        @Query("SELECT * from word_table ORDER BY word ASC")
+        fun getAlphabetizedWords(): LiveData<List<Word>>
+    
+        @Insert
+        fun insert(word: Word)
+    
+        @Query("DELETE FROM word_table")
+        fun deleteAll()
+    }
+
+*WordRoomDatabase.kt* 
+
+    @Database(entities = arrayOf(Word::class), version = 1)
+    abstract class WordRoomDatabase : RoomDatabase() {
+    
+        private class PopulateDbAsync internal constructor(db: WordRoomDatabase) : AsyncTask<Void, Void, Void>() {
+    
+            private val mDao: WordDao = db.wordDao()
+    
+            override fun doInBackground(vararg params: Void): Void? {
+                mDao.deleteAll()
+                var word = Word("Hello")
+                mDao.insert(word)
+                word = Word("World")
+                mDao.insert(word)
+                return null
+            }
+        }
+    
+        abstract fun wordDao(): WordDao
+    
+    
+        companion object {
+            private var INSTANCE: WordRoomDatabase? = null
+    
+            private val sRoomDatabaseCallback = object : RoomDatabase.Callback() {
+    
+                override fun onOpen(db: SupportSQLiteDatabase) {
+                    super.onOpen(db)
+                    PopulateDbAsync(INSTANCE!!).execute()
+                }
+            }
+    
+            fun getDatabase(context: Context): WordRoomDatabase? {
+                if (INSTANCE == null) {
+                    synchronized(WordRoomDatabase::class) {
+                        INSTANCE = Room.databaseBuilder(context.applicationContext,
+                                WordRoomDatabase::class.java, "word_database")
+                                .fallbackToDestructiveMigration()
+                                .addCallback(sRoomDatabaseCallback)
+                                .build()
+                    }
+                }
+                return INSTANCE
+            }
+    
+            fun destroyInstance() {
+                INSTANCE = null
+            }
+        }
+    }
+
+*WordViewModel.kt*
+
+    class WordViewModel(application: Application): AndroidViewModel(application){
+        internal var mRepository: WordRepository? = null
+        internal var allWords: LiveData<List<Word>>? = null
+    
+        init {
+           mRepository = WordRepository(application)
+            allWords = mRepository!!.getAllWords()
+        }
+    
+        fun getAllWords(): LiveData<List<Word>> {        return allWords!!}
+    
+        fun insert(word: Word) {        mRepository!!.insert(word)    }
+    }
+
+*WordRepository.kt*
+
+    class WordRepository(application: Application) {
+    
+        var mWordDao: WordDao? = null
+        var mAllWords: LiveData<List<Word>>? = null
+    
+        init {
+            val db = WordRoomDatabase.getDatabase(application)
+            mWordDao = db!!.wordDao()
+            mAllWords = mWordDao!!.getAlphabetizedWords()
+        }
+    
+        internal fun getAllWords(): LiveData<List<Word>> {
+            return mAllWords!!
+        }
+    
+        fun insert(word: Word) {
+            insertAsyncTask(mWordDao!!).execute(word)
+        }
+    
+    
+        private class insertAsyncTask internal constructor(private val mAsyncTaskDao: WordDao) : AsyncTask<Word, Void, Void>() {
+    
+            override fun doInBackground(vararg params: Word): Void? {
+                mAsyncTaskDao.insert(params[0])
+                return null
+            }
+        }
+    }
+
+  [1]: https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#0
+  [2]: https://github.com/googlecodelabs/android-room-with-a-view
+
+
+
+

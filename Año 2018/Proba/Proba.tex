@@ -1,0 +1,238 @@
+\documentclass[12pt]{report}
+\title{Probabilidad y Estadistica en \LaTeX}
+\author{Nelson Castro}
+\begin{document}
+\maketitle
+\newpage
+\begin{large}
+\begin{center}
+\subsection*{Probabilidad de A}
+
+$\displaystyle P(A)=\frac{n(A)}{n(S)}$
+
+\subsection*{Combinación(selección)} 
+$\displaystyle nCr=\left(
+\begin{array}{c}
+n \\
+r
+\end{array}
+\right)= \frac{n!}{r!(n-r)!}$
+
+\subsection*{Binomio de Newton}
+$\displaystyle (p+q)^n=\sum^{n}_{x=0}{\left(
+\begin{array}{c}
+n \\
+x
+\end{array}
+\right)p^xq^{n-x}}$
+
+\subsection*{Permutación(arreglo)}
+$\displaystyle nPr=\frac{n!}{(n-r)!}$
+
+\subsection*{Permutaciones con elementos repetidos}
+
+$\displaystyle \frac{n!}{n_1!\cdot n_2! \cdot n_3! \cdots n_k!}$
+
+\subsection*{Leyes de probabilidad}
+
+$\displaystyle P(A^\prime)=1-P(A)$
+
+$\displaystyle P(A-B)=P(A)-P(A\cap B)$
+
+$\displaystyle P(A\cup B)=P(A)+P(B)-P(A \cap B)$
+
+$\displaystyle P(A)\geq P(A \cap B)$
+
+$\displaystyle P(A)\leq P(A \cup B)$
+
+$\displaystyle P(A)\leq P(B) \Rightarrow P(A) \leq P(B)$
+\linebreak
+
+$\displaystyle P_A(B)=\frac{P(B \cap A)}{P(A)}\Rightarrow \frac{P(B)\cdot P_B(A)}{P(A)}$
+
+$\displaystyle P_B(A)=\frac{P(A\cap B)}{P(B)} \Rightarrow \frac{P(A)\cdot P_A(B)}{P(B)}$
+\linebreak
+
+$\displaystyle P(A^\prime \cap B^\prime)=P[(A\cup B)^\prime]=1-P(A\cup B)$
+
+$\displaystyle P(A^\prime \cup B^\prime)=P[(A\cap B)^\prime]=1-P(A\cap B)$
+\linebreak
+
+$\displaystyle P(A^\prime \cap B^\prime \cap C^\prime)=P[(A\cup B \cup C)^\prime]=1-P(A\cup B \cup C)$
+
+$\displaystyle P(A\cup B \cup C)=P(A)+P(B)+P(C)-P(A\cap B)-P(A\cap C)-P(B\cap C)+P(A\cap B\cap C)=1-P(A\cup B)$
+\linebreak
+
+$\displaystyle P(A\cap B)=P(A)-P(A-B)$, sucesos dependientes
+
+$\displaystyle P(A\cap B)=P(A)\cdot P(B))$, sucesos independientes
+
+$\displaystyle P(A\cap B)=\emptyset$, sucesos excluyentes
+
+\subsection*{Teorema de Bayes}
+
+\{$\displaystyle B_1,B_2,B_3,B_4\cdots B_n$\} constituye una partición de S, si se cumple:
+
+\begin{itemize}
+
+	\item[i)]
+	$\displaystyle P(B_i)>0$ para todo $i=1,2\cdots n$
+	\item[ii)]
+	$\displaystyle P(B_i \cap B_j)=0, si\textbf{ }i\neq j$
+	\item[iii)]
+	$\displaystyle \amalg_{i=1}^{n}{B_i}=P(S)=1$
+\end{itemize}
+
+
+$\displaystyle P(A)=\sum_{i=1}^{n}{P(B_i)\cdot P\left( \frac{A}{B_i}\right)}$ Teorema de probabilidad total
+\linebreak
+
+$\displaystyle P\left( \frac{B_i}{D} \right) =\frac{P(B_i)\cdot P\left(
+\frac{D}{B_i}\right)}{P(D)} $ Teorema de Bayes
+\newpage
+
+\subsection*{Función de probabilidad de variable aleatoria discreta}
+
+$\displaystyle f:R_x \Rightarrow [0,1]$ es función de probabilidad si cumple:
+\begin{itemize}
+	\item[i)]
+		$\displaystyle f(x) > 0, \forall x \in R_x$
+	\item[ii)]
+		$\displaystyle \sum_{R_x}{f(x)}=1$
+\end{itemize}
+
+\subsection*{E(x): esperanza matemática (valor esperado)}
+
+$\displaystyle \mu = \sum_{i=1}^{n}{x_i\cdot f(x_i}=\sum{x_i \left(
+\frac{f_i}{n}
+\right)}=\frac{1}{n}\sum{x_i\cdot f_i}=\overline{x}$
+
+*Es igual a la media aritmética.
+\linebreak
+
+si $\displaystyle x$ es una variable aleatoria $\displaystyle \Rightarrow (x-\mu)^2$ es v.a
+
+entonces: $\displaystyle \sigma^2= E(x-\mu)^2 = \sum(x-\mu)^2\cdot f(x)$
+
+al desarrollar la expresión se obtiene:
+
+$\displaystyle \sigma^2 = E(x^2)-\mu^2$   \textbf{  \^  }   $\displaystyle \sigma^2 = \sum x^2\cdot f(x) -\mu^2 $
+\newpage
+
+\section*{Funciones teóricas de probabilidad discretas}
+
+\begin{itemize}
+	\item
+		Función binomial
+	\item
+		Función hipergeométrica
+	\item
+		Función geométrica
+	\item
+		Función poisson
+\end{itemize}
+
+\subsection*{Función binomial}
+Se basa en experimentos donde solo hay dos formas de ocurrencia: éxito o fracaso.
+
+$\displaystyle P(exito)=p$  \textbf{  \^  }  $ P(fracaso)=1-p=q$
+\linebreak
+
+$\displaystyle p+q=1$
+
+se dan a llamar \underline{ensayos de Bernoulli}, es solo un ensayo.
+\linebreak
+
+\underline{En n ensayos de Bernoulli}
+\begin{itemize}
+	\item
+		cada ensayo se realiza de forma independiente
+	\item
+		en cada ensayo, la probabilidad de éxiot es la misma (p: constante)
+\end{itemize}
+
+$\displaystyle P(X=k) =
+\begin{array}{c}
+ \underbrace{pppppp}\cdots \underbrace{qqqqqq}\\
+ \textit{\hspace{0.1cm}k exitos \hspace{0.1cm} (n-k)fracasos}
+ \end{array}$
+\linebreak
+
+$\displaystyle P(X=k) = p^k q^{n-k}$ una forma de obtener k éxitos.
+
+$\displaystyle P(X=k) = f(x)= \left(
+\frac{n}{x}
+\right)  p^k q^{n-k}$
+
+x: numero de éxitos en n ensayos de Bernoulli
+
+p: pobabilidad constante de éxito
+
+q:$(1-p)$: probabilidad de fracaso
+\linebreak
+
+\subsection*{Función hipergeométrica}
+Son ensayos de Bernoulli, pero no hay independencia en su realización y la probabilidad de éxito no permanece constante
+\linebreak
+
+$\displaystyle f(x)=\frac{\left(
+\frac{n_i}{x}
+\right)\cdot \left(
+\frac{N-n_i}{n-x}
+\right)}{\left(
+\frac{N}{n}
+\right)}$
+
+$R_x$: 0,1,2,$\cdots$,n
+\hspace{1cm} si $n<n_i$
+
+$R_x$: 0,1,2,$\cdots,n_i$
+\hspace{1cm} si $n<n_i$
+\linebreak
+
+función hipergeométrica: 
+
+H:$(x,N,n,n_i)$
+
+P=$\frac{n_i}{N}$
+
+$\mu = nP$
+
+$\sigma^2 = n\cdot p\cdot q\left(
+\frac{N-n}{n-1}
+\right)$
+\linebreak
+
+\subsection*{Función geométrica}
+\begin{itemize}
+	\item
+		trabaja con ensayos de Bernoulli: éxito o fracaso.
+	\item
+		probabilidad constante P: éxito
+\end{itemize}
+
+X: numero de ensayos hasta obtener el primer éxito
+\linebreak
+
+$\displaystyle f(x)=p\cdot q^{x-1}$
+
+$R_x: 1,2,3,\cdots$
+
+\newpage
+\subsection*{Distribución de Poisson}
+
+$\displaystyle f(x)=\frac{\lambda^x \cdot e^{-\lambda}}{x!}$
+
+características en el continuo de tiempo.
+
+\begin{itemize}
+	\item
+		$\displaystyle \lambda$ es la medida en un intervalo de tiempo especifico.
+	\item
+		$\lambda$ es proporcional en cualquier subintervalo de continuo.
+	\item
+		Las probabilidades son iguales en intervalos igaules. ($\lambda$ es el mismo)
+\end{itemize}
+\end{center}
+\end{large}
+\end{document}

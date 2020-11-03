@@ -1,0 +1,180 @@
+\documentclass[12pt]{report}
+    \usepackage[margin=0.5in]{geometry}
+    \renewcommand{\familydefault}{\sfdefault}
+    \renewcommand{\baselinestretch}{1.5} 
+    \title{Técnicas de Simulación en Computadoras en \LaTeX}
+    \author{Nelson Castro}
+    \begin{document}
+        \maketitle
+        \newpage
+        \subsection*{\bfseries \large Ejercicio 1}
+        En la ecuación de transferencia de calor utilizada en la clase
+        \begin{center}
+            $\displaystyle \frac{d}{dx} \left( \frac{d}{dx}T \right) = -Q$
+        \end{center}
+        Modifique toda la formulación de la aplicación del MEF, considerando que Q ya no es constante, sino que corresponde a la siguiente función:
+        \begin{center}
+            $\displaystyle Q = Q(x) = x^2 -3x$
+        \end{center}
+        \textbf{Solución}
+        
+        \centering \textbf{Mallado}
+        \begin{center}
+            $\displaystyle \frac{d}{dx} \left( k\frac{dT}{dx} \right) = -(x^2 -3x)$, \hspace{0.7cm} \textit{k} $\rightarrow$ permeabilidad térmica \textit{constante}
+        \end{center}
+
+        donde $\displaystyle T=[N_i \hspace{0.2cm} N_{i+1}]\left[\begin{array}{c} T_i \\ T_{i+1} \end{array}\right] \Rightarrow \hat{T} \approx \textbf{NT}$, \hspace{0.7cm} $\displaystyle \textbf{N}_{(x)}$
+        
+        \textbf{Discretización}
+        \begin{center}
+            $\displaystyle \frac{d}{dx} \left( k\frac{d(\textbf{NT})}{dx} \right) \approx -x^2 +3x$
+        \end{center}
+
+        \textbf{Residuos} pasamos de aproximación a igualación
+        \begin{center}
+            $\displaystyle \frac{d}{dx} \left( k\frac{d(\textbf{N})}{dx} \textbf{T}\right) + x^2 -3x = \xi$, \hspace{0.7cm} $\xi \rightarrow$ resto o residuo 
+        \end{center}
+
+        \textbf{Método de los residuos ponderados} $\int_{\Omega} \xi_i w_i d\Omega = 0$       
+        \begin{center}
+            $\displaystyle \int_{\Omega} \textbf{W} \cdot \left[\frac{d}{dx} \left( k\frac{d(\textbf{N})}{dx} \textbf{T}\right) + x^2 -3x  \right] d\Omega = 0$   
+        \end{center}
+
+        donde $\displaystyle \frac{d(\textbf{N})}{dx} \Rightarrow \frac{d}{dx} \left[ N_i \hspace{0.2cm} N_{i+1}\right] \Rightarrow  \left[ \frac{d N_i}{dx} \hspace{0.2cm} \frac{d N_{i+1}}{dx}\right] \Rightarrow \left[ \left( -\frac{1}{x_{i+1}-x_i} \right) \left( \frac{1}{x_{i+1}-x_i} \right) \right]$
+
+        \begin{center}
+            $\displaystyle \int_\Omega \left[ \left(
+                \left[ \begin{array}{c} W_{i} \\ W_{i+1} \end{array} \right]
+                \cdot \frac{d}{dx} 
+                \left[ -\frac{k}{x_{i+1}-x_i} \hspace{0.2cm} \frac{k}{x_{i+1}-x_i} \right]
+            \right) \left[ \begin{array}{c} t_{i} \\ t_{i+1} \end{array}\right]+ x^2 -3x \right] d\Omega= 0$
+        \end{center}
+
+        \textbf{Método de Galerkin $\Rightarrow W_i = N_i$}
+        \begin{center}
+            $\displaystyle \int_{x_i}^{x_{i+1}} \textbf{N}^t \cdot \left[\frac{d}{dx} \left( k\frac{d(\textbf{N})}{dx} \textbf{T}\right) + x^2 -3x  \right] dx = 0$  \hspace{1cm} \textbf{Strong form} 
+        \end{center}
+
+        \textbf{Utilizando integración por partes } $\int u \hspace{0.1cm} dv = uv- \int v \hspace{0.1cm} du$
+        \begin{center}
+            $\displaystyle \int_{x_i}^{x_{i+1}} \textbf{N}^t \cdot \left[\frac{d}{dx} \left( k\frac{d(\textbf{N})}{dx} \textbf{T}\right) \right] dx +    \int_{x_i}^{x_{i+1}} \textbf{N}^t (x^2 -3x) dx = 0$ 
+        \end{center}
+
+        $\displaystyle U=\textbf{N}^t \hspace{2cm} dU=\frac{d}{dx}\textbf{N}^t$
+            
+        $\displaystyle dV=\frac{d}{dx} \left( k\frac{d(\textbf{N})}{dx} \textbf{T}\right) \hspace{2cm} V=k\frac{d(\textbf{N})}{dx}\textbf{T}$
+
+        \begin{center}
+            $\displaystyle \textbf{N}^t  k \frac{d(\textbf{N})}{dx} \textbf{T} - \int \frac{d}{dx}\textbf{N}^t k \frac{d}{dx}\textbf{NT} dx + (x^2 -3x) \int \textbf{N}^t dx = 0$
+
+            $\displaystyle \left. \textbf{N}^t  k \frac{d(\textbf{N})}{dx} \textbf{T} \right|_{\Gamma} - \int_{x_i}^{x_{i+1}} \frac{d}{dx}\textbf{N}^t k \frac{d}{dx}\textbf{NT} dx + (x^2 -3x) \int_{x_i}^{x_{i+1}} \textbf{N}^t dx = 0$  \hspace{1cm} \textbf{Weak form} 
+        \end{center}
+
+        \textbf{Retomando} la forma débil
+        \begin{center}
+            $\displaystyle k \int_{x_i}^{x_{i+1}} \frac{d}{dx} \textbf{N}^t \frac{d}{dx} \textbf{NT} dx  =  \int_{x_i}^{x_{i+1}} (x^2 -3x) \textbf{N}^t dx + \left. \textbf{N}^t  k \frac{d(\textbf{N})}{dx} \textbf{T} \right|_{\Gamma}$ 
+        \end{center}
+
+        donde $\displaystyle \frac{d}{dx} \textbf{N}^t \Rightarrow \frac{d}{dx} \left[ N_1 \hspace{0.2cm} N_2\right]^t \Rightarrow \left[ \begin{array}{c} \frac{d N_1}{dx} \\ \\ \frac{d N_2}{dx} \end{array} \right] \Rightarrow \left[ \begin{array}{c} -\frac{1}{x_{i+1}-x_i} \\ \\ \frac{1}{x_{i+1}-x_i} \end{array} \right] \Rightarrow \frac{1}{x_{i+1}-x_i} \left[ \begin{array}{c} -1 \\ 1 \end{array} \right]$
+
+        donde $\displaystyle \frac{d}{dx}\textbf{N} \Rightarrow \frac{1}{x_{i+1}-x_i} \left[ -1 \hspace{0.2cm} 1 \right]$
+
+        donde $\displaystyle \frac{d}{dx}\textbf{N}^t \frac{d}{dx}\textbf{N} \Rightarrow \frac{1}{(x_{i+1}-x_i)^2} \left[ \begin{array}{c c} 1 & -1 \\ -1 & 1\end{array} \right]$
+        
+        \begin{center}
+            $\displaystyle k \int_{x_i}^{x_{i+1}} \frac{1}{(x_{i+1}-x_i)^2} \left[ \begin{array}{c c} 1 & -1 \\ -1 & 1\end{array} \right] \textbf{T} dx = \int_{x_i}^{x_{i+1}} (x^2 -3x) \textbf{N}^t dx + \left. \textbf{N}^t  k \frac{d(\textbf{N})}{dx} \textbf{T} \right|_{\Gamma} $
+
+            $\displaystyle k \frac{1}{(x_{i+1}-x_i)^2} \left[ \begin{array}{c c} 1 & -1 \\ -1 & 1\end{array} \right] (x_{i+1}-x_i) \textbf{T} dx =  \int_{x_i}^{x_{i+1}} (x^2 -3x) \left[ \begin{array}{c} N_i \\ N_{i+1} \end{array} \right] dx + \left. \textbf{N}^t  k \frac{d(\textbf{N})}{dx} \textbf{T} \right|_{\Gamma}$
+
+            $\displaystyle k \frac{1}{(x_{i+1}-x_i)} \left[ \begin{array}{c c} 1 & -1 \\ -1 & 1\end{array} \right] \left[ \begin{array}{c} T_i \\ T_{i+1} \end{array} \right] dx =  \int_{x_i}^{x_{i+1}}  \left[ \begin{array}{c} N_i(x^2 -3x) \\ N_{i+1}(x^2 -3x) \end{array} \right] dx + \left. \textbf{N}^t  k \frac{d(\textbf{N})}{dx} \textbf{T} \right|_{\Gamma}$
+
+            $\displaystyle k \frac{1}{(x_{i+1}-x_i)} \left[ \begin{array}{c c} 1 & -1 \\ -1 & 1\end{array} \right] \left[ \begin{array}{c} T_i \\ T_{i+1} \end{array} \right] dx =  \left[ \begin{array}{c} \int_{x_i}^{x_{i+1}} \frac{x_{i+1}-x}{x_{i+1}-x_i}(x^2 -3x) \\ \int_{x_i}^{x_{i+1}} \frac{x-x_i}{x_{i+1}-x_i}(x^2 -3x) \end{array} \right] dx +  \left. \textbf{N}^t  k \frac{d(\textbf{N})}{dx} \textbf{T} \right|_{\Gamma}$
+
+            $\displaystyle k \frac{1}{(x_{i+1}-x_i)} \left[ \begin{array}{c c} 1 & -1 \\ -1 & 1\end{array} \right] \left[ \begin{array}{c} T_i \\ T_{i+1} \end{array} \right] dx =  \left[ \begin{array}{c} - \frac{(x_i-x_{i+1})(3(x^{2}_{i})+2(x_i)(x_{i+1}-6)+(x_{i+1}-6)(x_{i+1}))}{12} \\ \frac{(x_i-x_{i+1})((x^{2}_{i})+2(x_i)(x_{i+1}-3)+3(x_{i+1}-4)(x_{i+1}))}{12} \end{array} \right] dx +  \left. \textbf{N}^t  k \frac{d(\textbf{N})}{dx} \textbf{T} \right|_{\Gamma}$
+
+            $\displaystyle k \frac{1}{(x_{i+1}-x_i)} \left[ \begin{array}{c c} 1 & -1 \\ -1 & 1\end{array} \right] \left[ \begin{array}{c} T_i \\ T_{i+1} \end{array} \right] dx =  \frac{(x_i-x_{i_1})}{12} \left[ \begin{array}{c} - (3(x^{2}_{i})+2(x_i)(x_{i+1}-6)+(x_{i+1}-6)(x_{i+1}) \\ ((x^{2}_{i})+2(x_i)(x_{i+1}-3)+3(x_{i+1}-4)(x_{i+1})) \end{array} \right] dx +  \left. \textbf{N}^t  k \frac{d(\textbf{N})}{dx} \textbf{T} \right|_{\Gamma}$
+        \end{center}
+
+        $\displaystyle \large \textbf{k} \textbf{T} = \textbf{b}$
+
+        \newpage
+
+        $\displaystyle \large \textbf{k} \textbf{T} = \textbf{b}$
+
+        Para cada elemento \textit{i}
+
+        \begin{center}
+            $\displaystyle \textbf{k}^e = \left[ \begin{array}{c c} k_{i1}^{e} & k_{i2}^{e} \\ k_{i 3}^{e} & k_{i 4}^{e} \end{array} \right]$
+
+            $\displaystyle \textbf{b}^e = \left[ \begin{array}{c} b_{i1}^{e} \\ b_{i2}^{e} \end{array} \right]$
+        \end{center}
+
+        Ensamblaje
+
+        \begin{table}[!th]
+            \centering
+            \begin{tabular}{|l|c|c|}
+            \hline
+            \textbf{Elemento} & \textbf{i} & \textbf{i+1} \\
+            \hline
+            1 & 1 & 2 \\
+            \hline
+            2 & 2 & 3 \\
+            \hline
+            3 & 3 & 4 \\
+            \hline
+            \end{tabular}
+        \end{table}
+        
+        \begin{center}
+            $\displaystyle \left[ \begin{array}{c c c c}  
+                k_{1 1} & k_{1 2} & 0 & 0 \\
+                k_{1 3} & k_{1 4} + k_{2 1} & k_{2 2} & 0 \\
+                0 & k_{2 3} & k_{2 4} + k_{3 1} & k_{3 2} \\
+                0 & 0 & k_{3 3} & k_{3 4}
+            \end{array}\right] \left[ \begin{array}{c}
+                T_1 \\
+                T_2 \\
+                T_3 \\
+                T_4 \\
+            \end{array} \right] = \left[\begin{array}{c}
+                b_{1 1} \\
+                b_{1 2} + b_{2 1} \\
+                b_{2 2} + b_{3 1} \\
+                b_{3 2}
+            \end{array}\right]$
+        \end{center}
+
+        $\displaystyle \large \textbf{K} \textbf{T} = \textbf{B}$
+
+        \textbf{Condiciones de contorno}
+        
+        Condiciones de Dirichlet: $T = T_0$ en $\Gamma_D$, $\Gamma_D \hspace{0.2cm} \underline{\subset} \hspace{0.2cm} \Gamma$ 
+
+        donde $\displaystyle \left. \textbf{N}^t  k \frac{d(\textbf{N})}{dx} \textbf{T} \right|_{\Gamma} = \left[ \begin{array}{c} 10 \\ T_2 \\ T_3 \\ T_4 \end{array} \right]$
+
+
+        Condiciones de Neumann: $\frac{dT}{dx} = T_0$ en $\Gamma_N$, $\Gamma_N \hspace{0.2cm} \underline{\subset} \hspace{0.2cm} \Gamma$ 
+
+        donde $\displaystyle \left. \textbf{N}^t  k \frac{d(\textbf{N})}{dx} \textbf{T} \right|_{\Gamma} = \left[ \begin{array}{c} 0 \\ 0 \\ 0 \\ 3 \end{array} \right]$
+
+        \begin{center}
+            $\displaystyle \left[ \begin{array}{c c c c}  
+                k_{1 1} & k_{1 2} & 0 & 0 \\
+                k_{1 3} & k_{1 4} + k_{2 1} & k_{2 2} & 0 \\
+                0 & k_{2 3} & k_{2 4} + k_{3 1} & k_{3 2} \\
+                0 & 0 & k_{3 3} & k_{3 4}
+            \end{array}\right] \left[ \begin{array}{c}
+                10 \\
+                T_2 \\
+                T_3 \\
+                T_4 \\
+            \end{array} \right] = \left[\begin{array}{c}
+                b_{1 1} \\
+                b_{1 2} + b_{2 1} \\
+                b_{2 2} + b_{3 1} \\
+                b_{3 2}
+            \end{array}\right]+ \left[ \begin{array}{c} 0 \\ 0 \\ 0 \\ 3 \end{array} \right]$
+        \end{center}
+
+    \end{document}

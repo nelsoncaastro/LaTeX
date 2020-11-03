@@ -1,0 +1,158 @@
+\documentclass[12pt]{report}
+\title{Analisis de Sistemas en \LaTeX}
+\author{Nelson Castro}
+\begin{document}
+\maketitle
+\newpage
+\begin{center}
+\section*{Método de Newton Modificado}
+{\Large $\displaystyle P_{n+1}=P_n-\frac{f(P_n)}{\frac{f(P_n+h)-f(P_{n-1})}{(P_n+h)-P_{n-1}}}$}
+\section*{Método $\Delta^2$ de Aitken}
+{\Large \^P $\displaystyle =X_n-\frac{(X_{n+1}-X_n)^2}{X_{n+2}-2X_{n+1}+X_n}$}
+
+\begin{itemize}
+	\item
+	Es un método de \textbf{extrapolación}, es decir, utiliza los estimaciones anteriores de \textit{b} para predecir una mejor aproximación \^ P.
+	\item
+	Tiene efectos en \textbf{cualquier sucesión linealmente convergente}.
+	\item
+	No necesita de evaluaciones adicionales de $g(x)$, simplemente trabaja sobre los que ya están calculados como cualquier interación de punto fijo.
+\end{itemize}
+{\huge $\displaystyle S_n=\sum_{k=0}^{n}{\frac{(-1)^k}{2k+1}}$}
+\begin{table}[!th]
+\begin{center}
+\begin{tabular}{c|c|c|c|c|c}
+\hline
+\textit{n} & $X_n$ & $X_{n+1}$ & $X_{n+2}$ & \^P$_n$ & $E_{abs}$ \\
+\hline
+0 & $X_0$ & $X_1=g(X_0)$ & $X_2=g(X_1)$ & \^P$_0$ & $\not{\exists}$ \\
+\hline
+1 & $X_1$ & $X_2=g(X_1)$ & $X_3=g(X_2)$ & \^P$_1$ & $|$\^P$_1-$\^P$_0|$ \\
+\hline
+2 & $X_2$ & $X_3=g(X_2)$ & $X_4=g(X_3)$ & \^P$_2$ & $|$\^P$_2-$\^P$_1|$ \\
+\hline
+. & . & . & . & . & . \\
+. & . & . & . & . & . \\
+. & . & . & . & . & . \\
+\hline
+n & $X_n$ & $X_{n+1}=g(X_n)$ & $X_{n+2}=g(X_{n+1})$ & \^P$_n$ & $|$\^P$_n-$\^P$_{n-1}|$ \\
+\hline
+\end{tabular}
+\end{center}
+\caption{Método iterativo basado en una iteración de punto fijo $g(x)$}
+\end{table}
+
+\begin{itemize}
+	\item
+	Valores iniciales: $X_0$ (dado por el ejercicio)
+	\item
+	Respuesta: \^P$_n$
+	\item
+	Condición de paro: $E_{abs} \leq \epsilon$ (dado por el ejercicio)
+\end{itemize}
+\section*{Método de Steffensen}
+\begin{itemize}
+	\item
+	El método de Steffensen está basado en el método $\Delta^2$ de Aitken.
+	\item
+	A diferencia del método de Aitken, esta vez \textbf{introducimos la aproximación} en el $g(x)$. Para así obtener un mejor estiamdo.
+	\item
+	\^P se considera un buen estimado para la raíz, por lo que introduce como valor inical $X_n$ en la proxima ronda de iteraciones.
+	\item
+	Puede demostrarse que el método de Steffensen exhibe un \textbf{orden de convergencia cuadrático}.
+\end{itemize}
+
+\begin{table}[!th]
+\begin{center}
+\begin{tabular}{c|c|c|c|c|c}
+\hline
+\textit{n} & $X_n$ & $X_{n+1}$ & $X_{n+2}$ & \^P$_n$ & $E_{abs}$ \\
+\hline
+0 & $X_0$ & $X_1=g(X_0)$ & $X_2=g(X_1)$ & \^P$_0$ & $\not{\exists}$ \\
+\hline
+1 & $X_1=$\^P$_0$ & $X_2=g(X_1)$ & $X_3=g(X_2)$ & \^P$_1$ & $|$\^P$_1-$\^P$_0|$ \\
+\hline
+2 & $X_2=$\^P$_1$ & $X_3=g(X_2)$ & $X_4=g(X_3)$ & \^P$_2$ & $|$\^P$_2-$\^P$_1|$ \\
+\hline
+. & . & . & . & . & . \\
+. & . & . & . & . & . \\
+. & . & . & . & . & . \\
+\hline
+n & $X_n=$\^P$_{n-1}$ & $X_{n+1}=g(X_n)$ & $X_{n+2}=g(X_{n+1})$ & \^P$_n$ & $|$\^P$_n-$\^P$_{n-1}|$ \\
+\hline
+\end{tabular}
+\end{center}
+\caption{Método iterativo basado en una iteración de punto fijo $g(x)$}
+\end{table}
+
+\begin{itemize}
+	\item
+	Valores iniciales: $X_0$ (dado por el ejercicio)
+	\item
+	Respuesta: \^P$_n$
+	\item
+	Condición de paro: $E_{abs} \leq \epsilon$ (dado por el ejercicio)
+\end{itemize}
+
+\section*{Método de Müller}
+\begin{itemize}
+	\item
+	El método de Müller utiliza tres aproximaciones iniciales, $X_0,X_1,X_2$, para determinar la siguiente aproximación $X_3$ utilizando un método de extrapolación con un polinomio grado 2.
+	\item
+	La parábola se genera a partir de los 3 puntos iniciales, y puede predecir donde estará la raz de la función $f(x)$.
+	\item
+	El método de Müller suele ser bastante  efectivo para encontrar las \textbf{raíces complejas} de cualquier función.
+\end{itemize}
+
+$\displaystyle X_{n+3}=X_{n+2}-\frac{2c}{b+signo(b)\sqrt{b^2-4ac}}$
+
+$\displaystyle X_{n+3}=X_{n+2}+ h$
+
+$\displaystyle h_1=X_{n+1}-X_n$
+
+$\displaystyle h_2=X_{n+2}-X_{n+1}$
+
+$\displaystyle \delta_1=(f(X_{n+1})-f(X_{n}))/h_1$
+
+$\displaystyle \delta_2=(f(X_{n+2})-f(X_{n+1}))/h_2$
+
+$\displaystyle a=\frac{\delta_2-\delta_1}{h_2+h_1}$
+
+$\displaystyle b=\delta_2 + h_2a$
+
+$\displaystyle c=f(X_{n+2})$
+
+$\displaystyle h=-\frac{2c}{b+signo(b)\sqrt{b^2-4ac}}$
+
+$\displaystyle 
+signo(b)= \left\{\begin{array}{lr}
+	1 & $si  $ |b-\sqrt{b^2-4ac}| < |b+\sqrt{b^2-4ac} |  \\
+	-1 & $si  $ |b-\sqrt{b^2-4ac}| \geq |b+\sqrt{b^2-4ac} | 
+\end{array}\right\}
+$
+
+\begin{table}[!th]
+\begin{center}
+\begin{tabular}{c|c|c|c|c|c}
+\hline
+\textit{n} & $X_n$ & $X_{n+1}$ & $X_{n+2}$ & \^P$_n$ & $E_{abs}$ \\
+\hline
+0 & $X_0$ & $X_1=g(X_0)$ & $X_2=g(X_1)$ & \^P$_0$ & $\not{\exists}$ \\
+\hline
+1 & $X_1=$\^P$_0$ & $X_2=g(X_1)$ & $X_3=g(X_2)$ & \^P$_1$ & $|$\^P$_1-$\^P$_0|$ \\
+\hline
+2 & $X_2=$\^P$_1$ & $X_3=g(X_2)$ & $X_4=g(X_3)$ & \^P$_2$ & $|$\^P$_2-$\^P$_1|$ \\
+\hline
+. & . & . & . & . & . \\
+. & . & . & . & . & . \\
+. & . & . & . & . & . \\
+\hline
+n & $X_n=$\^P$_{n-1}$ & $X_{n+1}=g(X_n)$ & $X_{n+2}=g(X_{n+1})$ & \^P$_n$ & $|$\^P$_n-$\^P$_{n-1}|$ \\
+\hline
+\end{tabular}
+\end{center}
+\caption{Método iterativo basado en una iteración de punto fijo $g(x)$}
+\end{table}
+
+\end{center}
+\end{document}

@@ -1,0 +1,350 @@
+
+\documentclass[12pt]{article}
+\title{Clases de Analisis Numerico en \LaTeX}
+\author{Nelson Castro}
+\begin{document}
+\date{2018}
+\maketitle
+\newpage
+\section*{Analisis Numerico Clase (16/5)}
+\subsection*{Conceptos sobre el Espacio Euclideano}
+Norma Euclideana de un vector en {\large $R^n$}
+\linebreak
+
+Considere el vector	{\large $\left[
+\begin{array}{c}
+X_1 \\
+X_2\\
+X_3 
+\end{array}
+\right] \in R^3$ } 
+
+Cuyo tamaño modulo o norma es:
+
+{\large $\sqrt{{X_1}^2+{X_2}^2+{X_3}^2}=||\overline{X}||$}
+
+Sea {\large $\overline{Y} = \left[
+\begin{array}{c}
+Y_1 \\
+Y_2\\
+Y_3\\
+Y_4\\
+Y_5 
+\end{array}
+\right] \in R^5$ }
+
+{\large $\sqrt{{Y_1}^2+{Y_2}^2+ \cdots + {Y_5}^2}=||\overline{Y}||$}
+
+En general sea el vector
+{\large $ \overline X = \left[
+\begin{array}{c}
+X_1 \\
+X_2\\
+X_3 \\
+. \\
+. \\
+. \\
+X_n
+\end{array}
+\right] \in R^n$ }
+
+Donde la norma euclideana es
+{\large $||X||=(\sum_{i=1}^{n}{X_i^2})^\frac{1}{2}$}
+
+Propiedades de la norma en el espacio {\large $R^n$}
+\begin{itemize}
+\item
+
+\item
+\end{itemize}
+
+Propiedades del producto interno
+\begin{itemize}
+\item
+{\large $(\overline{X},\overline{Y})=(\overline{Y},\overline{X})  \forall \overline{X}, \overline{Y} \in R^n$}
+\item
+{\large $(\overline{X},\overline{X}) \ge 0 ; (\overline{X},\overline{X})= \sum_{i=1}^{n}{(X_i)^2}$}
+\item
+
+\end{itemize}
+
+Ortogonalidad entre vectores de {\large $R^n$} 
+
+Sean {\large $\overline{X}, \overline{Y} \in R^n$}, para los cuales se establece: $(\overline{X} y \overline{Y})$ son ortogonales si $(\overline{X},\overline{Y})=0$
+
+Notar que el vector nulo $\overline{0}$ es ortogonal o cualquier otro vector
+
+Un sistema de vectores $ \overline{X_1},\overline{X_2},\overline{X_3},\cdots,\overline{X_n}$ con $\underline{X}_i \ne 0$
+
+\newpage
+
+\begin{table}[!th]
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+ISO: & HDLC (Control de enlace de datos de alto nivel) \\
+IEEE: & 802.2 (LLC) \\
+  & 802.3 (Ethernet) \\
+  &	802.5 (Token Ring) \\
+  & 802.11 (Wireless LAN) \\
+ITU: & Q.922 (Estandar de Frame Relay)\\
+  & Q.921 (Estandar de enlace de datos ISDN)\\
+  & HDLC (Control de enlace de datos de alto nivel) \\
+ANSI: & 3T9.5 \\
+  & ADCCP (Protocolo de control de comunicación avanzada de datos) \\
+\hline
+\end{tabular}
+\end{center}
+\caption{Estandares para capa de enlace de datos}
+\label{ex:tablon}
+\end{table}
+
+\newpage
+\section*{Analisis Numerico Clase (21/5)}
+\subsection*{Caracteristica de la solución al problema de los minimos cuadrados}
+
+$\displaystyle F^* = C_0Q_0(x)+ C_1Q_1(x)+ C_2Q_2(x)+\cdots+ C_nQ_n(x)$
+
+{\large $ \underline X = \left[
+\begin{array}{c}
+X_0 \\
+X_1 \\
+X_2\\
+X_3 \\
+. \\
+. \\
+. \\
+X_n
+\end{array}
+\right]$ }
+{\large $ \underline f = \left[
+\begin{array}{c}
+f(X_0)\\
+f(X_1) \\
+f(X_2)\\
+f(X_3) \\
+. \\
+. \\
+. \\
+f(X_n)
+\end{array}
+\right]$}
+
+{\large $ \underline Q_1 = \left[
+\begin{array}{c}
+X_0\
+X_1 \\
+X_2\\
+X_3 \\
+. \\
+. \\
+. \\
+X_n
+\end{array}
+\right]$}
+{\large $ \underline Q_0= \left[
+\begin{array}{c}
+1\\
+1 \\
+1\\
+1 \\
+. \\
+. \\
+. \\
+1
+\end{array}
+\right]$}
+
+Se desea: {\large $ \underline f - \underline{f^*} = \left[
+\begin{array}{c}
+|f_0-f^*_0| \\
+|f_1-f^*_1| \\
+|f_2-f^*_2|\\
+|f_3-f^*_3| \\
+. \\
+. \\
+. \\
+|f_n-f^*_n|
+\end{array}
+\right]$}
+$||f_0-f^*_0||^2 \textbf{ sea lo menos posible}$
+
+$\displaystyle \underline F^* = C_0 \underline Q_0(x)+ C_1 \underline Q_1(x)+ C_2 \underline Q_2(x)+\cdots+ C_n \underline Q_n(x)=\sum_{i=0}^{n}{a_iQ_i}$
+
+$\displaystyle F^*$ es tal que $\displaystyle \underline {f-f^*}$ es ortogonal al espacio de $\displaystyle Q_0, Q_1,\cdots,Q_n$
+
+$\displaystyle \underline{f}- \sum_{i=0}^{n}{a_iQ_i}=(f^*-\sum_{i=0}^{n}{a_iQ_i})+(f- \underline{f^*})$
+
+$\displaystyle \underline{f}- \sum_{i=0}^{n}{a_i \underline Q_i}=(\sum_{i=0}^{n}{c_iQ_i}-\sum_{i=0}^{n}{a_iQ_i})+(f- \underline{f^*})$
+
+\newpage
+
+\section*{Analisis Numerico Clase (23/5)}
+
+$\displaystyle f(x)\textit{  en  } [a,b]$
+
+$\displaystyle (f,q)=\int_{a}^{b}{f(x)\cdot g(x)\cdot w(x) dx}$, \hspace{1cm}$\displaystyle w(x)=1\textit{  en  } [a,b]$
+
+$\displaystyle (f,q)=\int_{a}^{b}{f(x)\cdot dx}$
+
+$\displaystyle (f,f)=\int_{a}^{b}{f^2(x)\cdot g(x)\cdot dx}$
+
+$\displaystyle ||f||=\sqrt{\int_{a}^{b}{f^2(x)\cdot dx}}$
+
+Ejemplo: 
+
+$\displaystyle f(x)=e^{-x}\textit{  en  } [0,1]$
+
+$\displaystyle P(x)=c_0+c_1x+c_2x^2$, con $\displaystyle Q_0(x)=1,Q_1(x)=x, Q_2(x)=x^2$
+
+
+$\displaystyle \begin{array}{c}
+C_0(Q_0,Q_0)+C_1(Q_1,Q_0)+C_2(Q_2,Q_0) = (f_1Q_0)\\
+C_0(Q_0,Q_1)+C_1(Q_1,Q_1)+C_2(Q_2,Q_1) = (f_1Q_1)\\
+C_0(Q_0,Q_2)+C_1(Q_1,Q_2)+C_2(Q_2,Q_2) = (f_1Q_2)\\
+\end{array}$
+
+
+$\displaystyle \begin{array}{c}
+C_0\int_{0}^{1}{1\cdot dx}+C_1\int_{0}^{1}{x\cdot dx}+C_2\int_{0}^{1}{x^2\cdot dx} = \int_{0}^{1}{e^{-x}(1)dx}\\
+C_0\int_{0}^{1}{x\cdot dx}+C_1\int_{0}^{1}{x^2\cdot dx}+C_2\int_{0}^{1}{x^3 \cdot dx} = \int_{0}^{1}{e^{-x}(x)dx}\\
+C_0\int_{0}^{1}{x^2\cdot dx}+C_1\int_{0}^{1}{x^3\cdot dx}+C_2\int_{0}^{1}{x^4\cdot dx} = \int_{0}^{1}{e^{-x}(x^2)dx}\\
+\end{array}$
+
+$\displaystyle \begin{array}{c}
+C_0=0.994489\\
+C_1=-0.930548\\
+C_2=0.308719\
+\end{array}$
+
+$\displaystyle \underline{Q}=[Q_0,Q_1\cdots , Q_n]$
+
+$\displaystyle \underline{Q^t} = \left[
+\begin{array}{c}
+Q_0 \\
+Q_1 \\ 
+. \\
+.\\
+.\\
+Q_n
+\end{array}
+\right]; \underline{A} \cdot \underline{X}= \underline{B}$
+
+$\displaystyle \underline{X} =\underline{A^{-1}}\cdot \underline{B}$
+
+$\displaystyle \underline{A}=\int_{a}^{b}{\underline{Q^t}\cdot \underline{Q} \cdot dx}$
+
+$\displaystyle \underline{B}=\int_{a}^{b}{\underline{Q^t}\cdot f(x) \cdot dx}$
+
+\newpage
+\section*{Analisis Numerico 4/6}
+\subsection*{Las diferencias finitas}
+
+\underline{Conceptos:}
+
+Se denota por $Y_n$ a la sucesión \{$Y_n$\} las operaciones de traslación "E" y de diferencias progresivas "$\Delta$" se definen como: 
+$EY_n=$
+esto es una prueba que el lint sigue existiendo en este archivo y ni puta idea que carajo es $h_{ola}$
+\subsection{Puro vacilongo delicioso}
+  Que delicia esta mierda que funciona super delicioso para todo
+  $Y_1$
+  $Este es el gran vacil^3$
+  Yo se lo que le estoy diciendo lito dog
+  Hola mi copo drokcs
+  \subsection{Ecuaciones diferenciales.}
+  Variable dependiente
+  \\ Variable independiente, ctes
+  \\ Derivadas (ordinarias o parciales) de la variable dependiente
+  \\$F(x,y^I,y^{II}, \cdots y^{(n)},c)=0$
+  \\E.D.Ordinaria de orden "n"
+  \\Grado es el exponente de la mayor potencia
+  \\$2xyy^I-ex^2(y^I)^2=0$
+  \\E.D Ordinaria de primer orden y segundo grado
+  \\$2\frac{dy}{dt}-t^2 \left(
+ \frac{d^2}{dt^2}   
+  \right)^2=4\cdot Cos(t)$
+  \\E.D Parcial de Segundo orden de primer grado
+  \\Resolver una E.D implica hallar una función $y=f(x)+c$ ó $y=f(t)+c$
+  \\que al sustituir en la E.D de primer orden, la satisface
+  \\$y=2e^{-2x}+\frac{1}{3}e^x$
+  sol de $y^I+2y=e^x$
+  \\Ejemplo
+ \\ $y=1+c\sqrt{1-x^2}; (1-x^2)y^1+xy=x$
+
+  \subsection{Ecuaciones Diferenciales de primer orden}
+  \begin{itemize}
+    \item E.D Variables separables
+    \item E.D Homogeneas
+    \item E.D de Coeficientes Lineales
+    \item E.D Exacta
+    \item E.D por factor integrante
+    \item E.D lineal de primer orden
+  \end{itemize}
+  \subsection{E.D Variables separables}
+  $F(X,Y,Y^I,c)=0$
+  \\ $y^\prime=G(x,y)\rightleftharpoons\frac{dy}{dx}=G(x,y)$
+  $y^\prime=\frac{\Phi(x)\mu(x)}{h(x)P(y)}$
+  $\frac{dy}{dx}=\frac{\Phi(x)\mu(x)}{h(x)P(y)}$
+  $M(x,y)dx - N(x,y)dy = 0$
+  forma diferencial de la E.D
+  $\Phi(x)\cdot\mu(y)dx-h(x)\cdot P(y)dy=0$
+  $div\div h(x)\cdot\mu(y)$
+  $\frac{\Phi(x)\mu(x)}{h(x)P(y)}dx-\frac{h(x)P(y)}{h(x)\mu (y)}dy=0$  
+  $\frac{\Phi(x)}{y}$ aquí me quede :(
+  \\Integrando:
+  \\$\int\frac{\Phi(x)}{h(x)}dx-\int\frac{P(Y)}{=\mu(y)}dy=C$
+  \\La constante C solo puede hallarse cuando se proporciona una condición inicial $y(0)=y_0\rightarrow (0,y_0)$
+  \\o bien puede darse otro punto conocido $y(x_0)=y_0\rightarrow (x_0,y_0)$
+  \\Ejemplo
+  \\$xy\frac{dy}{dx}=1+y^2$ 
+  \\$y^\prime=4e^{x+y}$ y luego encuentre la solución particular que pasa por el origen (0,0)
+  \\$\frac{dy}{dx}=4e^x e^y$
+  \\$\frac{dy}{e^y_0}=4e^x dx$
+  \\$\int e^{-y}dy=\int 4 e^x dx$
+  \\Integrando
+  \\$-e^{-y}=4e^x +c$
+  \\$(0,0)$
+  \\$-1=4(1)+c$
+  \\$c= -5$
+ 
+  \newpage
+  \section{Analisis Numerico 20/06}
+\subsection{Ecuaciones Diferenciales Homogeneas(EDH)}
+ Dice que la funcion F(X,y) es homogenea, si cumple cualquiera de las siguientes condiciones
+\begin{itemize}
+  \item $f(tx,ty)=t^n f(x,y)$
+  \item $f(x,y)=x^n f(1,\frac{y}{x})$
+  \item $f(x,y)=y^n f(\frac{x}{y},1)$
+\end{itemize}
+Siendo "n" grado de homogeneidad
+
+Una E.D de la forma $M(x,y)dx+N(x,y)dy=0$ es homogenea cuando $M(x,y)$ y $N(x,y)$ son homogeneas del mismo grado.
+\\ \textbf{Teorema}
+\\Toda EDH se transforma en una EDVS al hacer la sustitucion $y=ux$ o $x=vy$
+\\$y=ux \rightarrow dy=udx+xdu$
+\\$x=vy \rightarrow dx=vdy+ydv$
+
+\subsection{Ecuaciones Diferenciales Exactas (EDE)}
+Es toda ecuacion diferencial de la forma $M(x,y)dx+N(x,y)=0$ en las que se cumple que $\frac{dN}{dx}=\frac{dM}{dy}$ siendo su solución $\Phi(x,y)+c=0$
+
+\subsection{Ecuacion Diferenciales por Factor Integrante}
+Considere la siguieinte E.D $(x+y)dx+(x\cdot ln(x))dy=0$
+$M:x+y \Rightarrow \frac{dM}{dy}=1$
+$N:x\cdot ln(x) \Rightarrow \frac{dN}{dx}=ln(x)+1$
+$M(x,y)dx+N(x,y)dy=0$
+
+\section{Clase de analisis numerico (4/7)}
+Esta clase va a ser acerca de ecuaciones diferenciales y vamos a hablar del espacio euclididano.
+\\ $\displaystyle \int _{-2}^{4}{x^2 \cdot \sqrt{ab+4dc} \cdot dx} = \frac{\sigma ^2 }{sen(y)}$
+\newpage
+Entonces las partes de espacio euclidiando son las siguientes:
+\begin{itemize}
+  \item Principio 
+  \item Consecuente 
+  \item Cuerpo 
+  \item Analisis
+  \item Conclusiones
+  \item Fin
+\end{itemize}
+\end{document}
+

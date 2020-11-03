@@ -1,0 +1,75 @@
+\documentclass[12pt]{report}
+    \usepackage[margin=1in]{geometry}
+    \usepackage{bm}
+    \renewcommand{\familydefault}{\sfdefault}
+    \renewcommand{\baselinestretch}{1.5} 
+    \title{Técnicas de Simulación en Computadoras en \LaTeX}
+    \author{Nelson Castro}
+    \begin{document}
+        \maketitle
+        \newpage
+        \subsection*{\bfseries \large Parte I}
+        Dos palmeras se encuentran conectadas a través de una soga hecha de vibrano. Mr. Kwai quiere utilizar esta soga como tendedero, pero para ello necesita conocer la capacidad de absorción $(\alpha)$ de energía de la soga en cada uno de sus puntos.
+        \\Mr.Kwai sabe que dicho problema físico es controlado por la siguiente ecuación:
+
+        \begin{center}
+            $\displaystyle \frac{1}{2}\frac{d}{dx}\left( \frac{1}{2}\frac{d}{dx}\left(\frac{1}{2}\alpha\right)\right)$
+        \end{center}
+        Haciendo pruebas, Mr. Kwai sabe que al inicio de la soga la capacidad de absorción es igual a 8, y sabe también que al final de la soga la tasa de cambio de la capacidad de absorción es igual a -2.
+        \\Usted debe ayudarle a Mr. Kwai a resolver este problema modelando la soga en una dimensión y aplicando el Método de los Elementos Finitos, utilizando: 
+        
+        - 4 elementos de igual longitud.
+        
+        - Fundiones de forma lineales.
+        
+        - El método de Galerkin.
+        \\ \textit{No es necesario calcular la inversa de la matriz de coeficientes final, sólo deje indicado el sistema final.}
+        \\Asuma que el inicio de la soga se encuentra en la posición $x = 0$ y que la soga tiene una longitud de 2 metros.
+        \\Recuerde que las $N_i$ a utilizar son: $\displaystyle N_1 = \frac{x_2-x}{l}$ y $\displaystyle N_2 = \frac{x-x_1}{l}$
+        \newpage
+        \textbf{Solución}
+        
+        \centering \textbf{Mallado}
+        \begin{center}
+            $\displaystyle \frac{1}{2}\frac{d}{dx}\left(\frac{1}{2}\frac{d}{dx}\left(\frac{1}{2}\alpha\right)\right) = -Q$
+        \end{center}
+
+        donde $\displaystyle \alpha=[N_i \hspace{0.2cm} N_{i+1}]\left[\begin{array}{c} \alpha_i \\ \alpha_{i+1} \end{array}\right] \Rightarrow \hat{\alpha} \approx \textbf{N} \bm{\alpha}$, \hspace{0.7cm} $\displaystyle \textbf{N}_{(x)}$
+        
+        \begin{center}
+            $\displaystyle \frac{1}{8}\frac{d}{dx}\left(\frac{d(\textbf{N}\bm{\alpha})}{dx}\right) \approx -Q$
+        \end{center}
+
+        \textbf{Residuos} pasamos de la aproximación a igualación
+        \begin{center}
+            $\displaystyle \frac{1}{8}\frac{d}{dx}\left(\frac{d(\textbf{N})}{dx} \bm{\alpha} \right) + Q = \xi$, \hspace{1cm} $\xi \rightarrow$ resto o residuo
+        \end{center}
+
+        \textbf{Método de los residuos ponderados} $\int_{\Omega} \xi_i w_i d\Omega = 0$       
+        \begin{center}
+            $\displaystyle \int_{\Omega} \textbf{W} \cdot \left[\frac{1}{8} \frac{d}{dx} \left( \frac{d(\textbf{N})}{dx} \bm{\alpha}\right) + Q  \right] d\Omega = 0$   
+        \end{center}
+
+        donde $\displaystyle N_i = \frac{x_{i+1}-x}{le} \hspace{0.5cm} \textit{y} \hspace{0.5cm} N_{i+1} = \frac{x-x_i}{le}$
+
+        donde $\displaystyle \frac{d(\textbf{N})}{dx} \Rightarrow \frac{d}{dx} \left[ N_i \hspace{0.2cm} N_{i+1}\right] \Rightarrow  \left[ \frac{d N_i}{dx} \hspace{0.2cm} \frac{d N_{i+1}}{dx}\right] \Rightarrow \left[ \left( -\frac{1}{le} \right) \left( \frac{1}{le} \right) \right]$
+
+        \begin{center}
+            $\displaystyle \int_\Omega \left[ \frac{1}{8}\left(
+                \left[ \begin{array}{c} W_{i} \\ W_{i+1} \end{array} \right]
+                \cdot \frac{d}{dx} 
+                \left[ -\frac{1}{le} \hspace{0.2cm} \frac{1}{le} \right]
+            \right) \left[ \begin{array}{c} \alpha_{i} \\ \alpha_{i+1} \end{array}\right]+ Q \right] d\Omega= 0$
+        \end{center}
+
+        \textbf{Método de Galerkin $\Rightarrow W_i = N_i$}
+        \begin{center}
+            $\displaystyle \int_{x_i}^{x_{i+1}} \textbf{N}^t \cdot \left[\frac{1}{8}\frac{d}{dx} \left( \frac{d(\textbf{N})}{dx} \bm{\alpha}\right) + Q  \right] dx = 0$  \hspace{1cm} \textbf{Strong form} 
+        \end{center}
+
+        \textbf{Utilizando integración por partes } $\int u \hspace{0.1cm} dv = uv- \int v \hspace{0.1cm} du$
+        \begin{center}
+            $\displaystyle \int_{x_i}^{x_{i+1}} \textbf{N}^t \cdot \left[\frac{1}{8}\frac{d}{dx} \left( \frac{d(\textbf{N})}{dx} \bm{\alpha}\right) + Q  \right] dx = 0$ 
+        \end{center}
+
+    \end{document}

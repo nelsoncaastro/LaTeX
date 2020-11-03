@@ -1,0 +1,35 @@
+\documentclass[12pt]{report}
+    \title{Vacil en \LaTeX}
+    \author{Nelson Castro}
+    \newcommand\tab[1][1cm]{\hspace*{#1}}
+    \begin{document}
+        \maketitle
+        \newpage
+        \section*{Configuración basica}
+        \section*{DHCP}
+        \section*{IPV6}
+            (config)ipv6 unicast-routing
+            \\(config)ipv6 dhcp pool \{name\}
+                \\ \tab prefix-delegation pool \{name\}
+            \\interface f0/0
+                \\ \tab ipv6 enable
+                \\ \tab ipv6 address \{IPV6\}/64
+                \\ \tab ipv6 nd managed-config-flag
+                \\ \tab ipv6 dhcp server \{name\}
+            \\ipv6 local pool \{name\} \{IPV6\}/64
+            \\ \{client\} ip auto
+        \section*{ACL}
+        ACL Standard:
+        \tab (config)\#access-list n \{permit | deny\} source \{source-mask\} 
+        \\ACL extendida:
+        \tab (config)\#access-list n \{permit | deny\} protocol source \{source-mask\} destination \{destination-mask\} [eq destination-port]
+        Protocol: ip | tcp | udp | icmp
+        Comparación: gt | lt | eq
+        Origen/destino:
+        \begin{itemize}
+            \item 1 sola dirección IP: host
+            \item 1 subred: ip wildcard
+            \item cualquier subred: any
+        \end{itemize}
+        Hola mundo escribo algo para que veas que si funciona.
+    \end{document}

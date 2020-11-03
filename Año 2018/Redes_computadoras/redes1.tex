@@ -1,0 +1,14 @@
+\documentclass[12pt]{report}
+    \title{Redes de computadoras en \LaTeX}
+    \author{Nelson Castro}
+    \begin{document}
+        \maketitle
+        \newpage
+        \subsection*{Access List}
+        access-list 100 permit tcp host 192.168.10.2 host 192.168.10.130 eq www
+        \\access-list 100 deny host 192.168.10.2 host 192.168.10.130
+        \\aqui faltan
+        \\access-list 101 deny tcp 192.168.10.64 0.0.0.63 host 192.168.10.130 eq www
+        \\access-list 101 deny icmp 192.168.10.64 192.168.10.0 0.0.0.63
+        \\access-list 101 permit icmp any any
+    \end{document}

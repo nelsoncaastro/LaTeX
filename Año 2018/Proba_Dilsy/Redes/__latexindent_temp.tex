@@ -1,0 +1,39 @@
+\documentclass[12pt]{report}
+    \title{Script}
+    \author{El mero vacil}
+    \begin{document}
+        \maketitle
+
+        \newpage
+        \section*{Explicación infraestructura de red}
+        Se hara uso del emulador VirtualBox, para simular una red que contenga lo siguiente:
+        \begin{itemize}
+            \item Cliente A
+            \item Cliente B
+            \item Servidor A
+            \item Servidor B
+        \end{itemize}
+        \subsection*{Cliente A}
+        Se utilizará para realizar pruebas de conexión y uso de servicios de red. Se ha decidido la utilización de Ubuntu Budgie 18.04.
+        \subsection*{Cliente B}
+        Se utilizará también para realizar pruebas de conexión y uso de servicios de red. Se ha decidido la utilización de Windows 7 Ultimate.
+        \subsection*{Servidor A}
+        Se ha designado como servidor principal, este servidor funcionará como servicio de DNS para la red interna, y además se le configurará el servicio de proxy-server (SQUID) que será responsable de interconectar la red interna de clientes (A y B) con otra red externa. 
+        Se ha decidido la utilización de Ubuntu Server 18.04.
+        \subsection*{Servidor B}
+        Se ha designado como servidor interno, y se encargará como proveedor de los servicios DHCP y apache. Se ha decidido la utilización de Ubuntu Server.
+        \section*{Vista general de los temas a tratar}
+        \subsection*{Servidor A}
+        \begin{itemize}
+            \item Instalar dos tarjetas de red: una para red interna (estática) y una para red externa y lograr tener acceso a internet.
+            \item Configurar el servicio de proxy-cache para dar acceso a internet al resto de host de la red interna. Bloquear páginas principales de entretenimiento.
+            \item Configurar el servicio DNS primario y asignar nombres de dominio a los servidores A y B.
+        \end{itemize}
+        \subsection*{Servidor B}
+        \begin{itemize}
+            \item Configurar el servicio de DHCP para que los clientes puedan conseguir su información de red vía DHCP.
+            \item Configurar el servicio de Apache Server como servidor interno. Instalar la plataforma Wordpress, para proveer a los clientes acceso a la misma.
+        \end{itemize}
+        \subsection*{Clientes}
+        Realizar pruebas de los servicios: DNS, DHCP, acceso a Internet y Apache.
+    \end{document}
